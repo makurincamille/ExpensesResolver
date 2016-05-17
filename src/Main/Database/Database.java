@@ -34,5 +34,7 @@ public class Database {
         return listOfFriendPurchases;
     }
 
-
+    public void reset(){
+        purchaseList.clear();
+    }
 }
