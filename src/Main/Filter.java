@@ -19,7 +19,9 @@ public class Filter {
                 responce.put("average",controller.getAverage());
             return responce;
             case "RESOLVE":
-
+                responce.put("expenses", controller.getAllFriendExpenses());
+                responce.put("transactions",controller.resolveTrasactions());
+                return responce;
             case "RESET":
                 controller.reset();
 

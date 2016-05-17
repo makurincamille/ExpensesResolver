@@ -1,11 +1,10 @@
 package Main;
 
 
-
-
 import Main.Database.Database;
 import Main.Domain.Purchase;
 import Main.Domain.Transaction;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,8 +38,9 @@ public class Controller {
         }
         return totalExpense;
     }
-    public Double getAverage(){
-        Double average =  getTotalExpenses() / friendNamesList.size();
+
+    public Double getAverage() {
+        Double average = getTotalExpenses() / friendNamesList.size();
         return average;
     }
 
@@ -74,7 +74,6 @@ public class Controller {
         TransactionsResolver transactionsResolver = new TransactionsResolver(getAllFriendExpenses(),
                 friendNamesList, getTotalExpenses());
 
-
         List<Transaction> transactionsList = transactionsResolver.resolveTransactions();
         return transactionsList;
     }
@@ -87,7 +86,7 @@ public class Controller {
         }
     }
 
-    public void reset(){
+    public void reset() {
         database.reset();
         totalExpense = 0.0;
         friendNamesList.clear();

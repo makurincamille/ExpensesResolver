@@ -63,7 +63,7 @@ public class TransactionsResolver {
 
     /**
      * In method friend expenses are compared.
-     * if currentExpense values is bigger than absolute values of
+     * if currentExpense value is bigger than absolute values of
      * comperableExpense, transaction object is being created, where debitor, creditor names and amount are being specified.
      * Tranactions put in the list.
      * Overal debt and debt of current friend is reduced by amout specified in transaction.
@@ -83,8 +83,14 @@ public class TransactionsResolver {
                     Double comperableExpense = innerEntry.getValue();
                     if (comperableExpense < 0 && currentExpense >= abs(comperableExpense)) {
                         Double delta = currentExpense + comperableExpense;
-                        transactionsList.add(new Transaction(outerEntry.getKey(), innerEntry.getKey(), delta));
-                        allfriendsDeltaExpenses.replace(innerEntry.getKey(), currentExpense, currentExpense - delta);
+                        transactionsList.add(new Transaction(outerEntry.getKey(), innerEntry.getKey(), comperableExpense));
+                        if (delta == 0) {
+                            allfriendsDeltaExpenses.remove(outerEntry.getKey());
+
+                        } else {
+
+                            allfriendsDeltaExpenses.replace(outerEntry.getKey(), currentExpense, currentExpense - delta);
+                        }
                         allfriendsDeltaExpenses.remove(innerEntry.getKey());
 
                         debt -= innerEntry.getValue();
@@ -98,7 +104,6 @@ public class TransactionsResolver {
 
         return transactionsList;
     }
-
 }
 
 
