@@ -7,12 +7,10 @@ import java.util.Map;
  */
 public interface UserInterface {
 
-    void openMainWindow();
+    void openMenu();
 
-    void showResults();
+    Map getRequest();
 
-    Map getPurchaseData();
-
-    String getCommand();
+    void processResponse(Map<String, Object> response);
 
 }

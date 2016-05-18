@@ -15,6 +15,12 @@ public class Transaction {
         this.amount = amount;
     }
 
+    @Override
+    public String toString(){
+        return this.debitorName + " has to pay " + this.creditorName + " " + this.amount + "$.";
+
+    }
+
     public String getDebitorName() {
         return debitorName;
     }
