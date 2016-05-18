@@ -3,9 +3,7 @@ package Main;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Camille on 17.05.2016.
- */
+
 public class Filter {
 
     Controller controller = new Controller();

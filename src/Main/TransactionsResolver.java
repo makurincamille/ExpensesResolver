@@ -11,14 +11,11 @@ import java.util.Map;
 
 import static java.lang.Math.abs;
 
-/**
- * Created by Camille on 15.05.2016.
- */
 public class TransactionsResolver {
 
-    public Double totalExpense;
     public Map<String, Double> allfriendsExpenses;
     public List<String> friendNamesList;
+    public Double totalExpense;
 
     public TransactionsResolver(Map allfriendsExpenses, List<String> friendNamesList, Double totalExpense) {
         this.totalExpense = totalExpense;
@@ -32,8 +29,8 @@ public class TransactionsResolver {
      * if delta is negative - friend is creditor, he overpayed
      * if delta is positive - friend is debitor, he has underpayed and has to make transactions
      */
-    private Map<String, Double> getAllfriendsDeltaExpenses() {
-        Double average = totalExpense / friendNamesList.size(); /** double/int ?? */
+    public Map<String, Double> getAllfriendsDeltaExpenses() {
+        Double average = RoundUtility.round(totalExpense / friendNamesList.size());
 
         Map<String, Double> allfriendsDeltaExpenses = new HashMap<>();
         for (Map.Entry<String, Double> entry : allfriendsExpenses.entrySet()) {
@@ -50,10 +47,10 @@ public class TransactionsResolver {
     /**
      * Calculates total amount owed/overpayed
      */
-    private Double calculateDebt() {
+    public Double calculateDebt() {
         Double debt = 0.0;
 
-        for (Map.Entry<String, Double> entry : allfriendsExpenses.entrySet()) {
+        for (Map.Entry<String, Double> entry : getAllfriendsDeltaExpenses().entrySet()) {
             if (entry.getValue() >= 0) {
                 debt += entry.getValue();
             }

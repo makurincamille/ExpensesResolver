@@ -40,7 +40,8 @@ public class Controller {
     }
 
     public Double getAverage() {
-        Double average = getTotalExpenses() / friendNamesList.size();
+
+        Double average = RoundUtility.round(getTotalExpenses() / friendNamesList.size());
         return average;
     }
 

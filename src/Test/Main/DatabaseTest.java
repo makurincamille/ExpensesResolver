@@ -3,7 +3,6 @@ package Main;
 import Main.Database.Database;
 import Main.Domain.Purchase;
 import org.junit.Test;
-
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
