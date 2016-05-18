@@ -1,4 +1,6 @@
-package Main;
+package Main.Utilities;
+
+import Main.Main;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
