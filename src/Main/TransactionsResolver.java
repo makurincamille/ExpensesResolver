@@ -76,7 +76,7 @@ public class TransactionsResolver {
         while (debt > 0) {
             for (Map.Entry<String, Double> outerEntry : allfriendsDeltaExpenses.entrySet()) {
                 Double currentExpense = outerEntry.getValue();
-                for (Map.Entry<String, Double> innerEntry : allfriendsDeltaExpenses.entrySet()) {
+                    for (Map.Entry<String, Double> innerEntry : allfriendsDeltaExpenses.entrySet()) {
                     Double comperableExpense = innerEntry.getValue();
                     if (comperableExpense < 0 && currentExpense >= abs(comperableExpense)) {
                         Double delta = currentExpense + comperableExpense;
