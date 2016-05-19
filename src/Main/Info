@@ -1,0 +1,9 @@
+Application has many defects and further development should be made.
+
+By now the are no validator for user input, exceptions unhandled.
+For command only whole integers are accepted.
+For purchase costs only values with "." as decimal delimiter are accepted.
+
+Also transaction resolving algorithm is sensitive to input as number rounding is pretty rough.
+Case when sum of overpaid and sum of underpaid amounts might not be equal can occur.
+Application does't handle that case.

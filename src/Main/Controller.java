@@ -11,7 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * Controller processes the data which was received with request and returns data for response.
+ */
 public class Controller {
 
     Database database = new Database();
@@ -19,19 +21,21 @@ public class Controller {
 
     public List<String> friendNamesList = new ArrayList<>();
 
-
+    /**
+     * Adds purchase to storage and updates friend name list
+     */
     public void addPurchase(Map purchaseData) {
 
         updateFriendNameList((String) purchaseData.get("friendName"));
         Purchase purchase = new Purchase((String) purchaseData.get("friendName"),
                 (String) purchaseData.get("purchaseDescription"), roundUtility.round((Double) purchaseData.get("cost")));
-        //for debug
-        System.out.println(roundUtility.round((Double) purchaseData.get("cost")));
         database.addPurchase(purchase);
 
     }
 
-
+    /**
+     * Returns the sum of all purchases.
+     */
     public Double getTotalExpenses() {
         Double totalExpense = 0.0;
         List<Purchase> purchaseList = database.getAllPurchaseList();
@@ -42,14 +46,15 @@ public class Controller {
         return roundUtility.round(totalExpense);
     }
 
+    /**
+     * Returns the amount that every friend has to have paid.
+     */
     public Double getAverage() {
-
-        Double average = roundUtility.round(getTotalExpenses() / friendNamesList.size());
-        return average;
+        return roundUtility.round(getTotalExpenses() / friendNamesList.size());
     }
 
     /**
-     * Returns total expenses of specific friend
+     * Returns the sum of expenses for a specific friend.
      */
     public Double getFriendExpenses(String friendName) {
         Double friendsTotalExpens = 0.0;
@@ -62,7 +67,7 @@ public class Controller {
     }
 
     /**
-     * returns map <friendName, totalExpense> for all friend names
+     * returns map <friendName, sum of expenses> for all friend names
      */
     public Map getAllFriendExpenses() {
         Map<String, Double> allfriendsExpenses = new HashMap<>();
@@ -72,7 +77,9 @@ public class Controller {
         return allfriendsExpenses;
     }
 
-
+    /**
+     * Returns list of transactions to be made among the friends to them to have even amounts paid.
+     */
     public List<Transaction> resolveTrasactions() {
 
         TransactionsResolver transactionsResolver = new TransactionsResolver(getAllFriendExpenses(),
@@ -82,7 +89,9 @@ public class Controller {
         return transactionsList;
     }
 
-
+    /**
+     * Adds friends name to the friend name list? if the list does't contain that name
+     */
     public void updateFriendNameList(String friendName) {
 
         if (!friendNamesList.contains(friendName)) {

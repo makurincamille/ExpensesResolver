@@ -9,11 +9,12 @@ import Main.Utilities.RoundUtility;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Math.abs;
+/**
+ * The class for returning list of transactions to be made among the friends to them to have even amounts paid.
+ * */
 
 public class TransactionsResolver {
 
@@ -31,11 +32,12 @@ public class TransactionsResolver {
     }
 
     /**
-     * Method creates map for <friend name, delta>
-     * Delta = average (sum which everyone has to pay) - friendExpense(sum which specific friend actualy paid)
-     * if delta is negative - friend is creditor, he overpayed
-     * if delta is positive - friend is debitor, he has underpayed and has to make transactions
-     */
+     * Returns the list of balances. In the balance objects the name of a friend is stored
+     * and the amount that friend has overpayed or underpayed.
+     * Balance amount (delta value (should be refactored)) is calculated by formula:
+     * Balance amount (delta)=  sum to be paid by each friend (average)- sum that specific friend has actually paid (expense)
+     *
+     * */
     public List<Balance> getAllfriendsDeltaExpenses() {
         Double average = 1.0;
         if (friendNamesList.size()!=0) {
@@ -55,15 +57,28 @@ public class TransactionsResolver {
 
 
 
-    /**
-     * In method friend expenses are compared.
-     * if currentExpense value is bigger than absolute values of
-     * comperableExpense, transaction object is being created, where debitor, creditor names and amount are being specified.
-     * Tranactions put in the list.
-     * Overal debt and debt of current friend is reduced by amout specified in transaction.
-     * Iterations over maps continues until debt equals 0
-     * *
-     */
+   /**
+    * In the method list of balances is separeted in two lists:
+    * Positive - with only positive balance  amounts (amounts that are underpaid)
+    * Negative - with only negative  amounts (amounts overpaid).
+    * Max and min balance amounts are found in positive and negative accordingly.
+    * Max and min are compared by summing both values (result is delta value)
+    *
+    * if max > min (delta>0), transaction is being created containing names of who pays to whom, and the smalest value
+    * from this max-min pair. Min value in this case.
+    * Balance with min balance amount is removed from negative list,
+    * but amount of max is updated with delta values (the leftover basicaly)
+    *
+    * if max < min (delta <0) same kind of transaction is created only now the sources of names  swapped.
+    * Negative and positive list update now happens vice versa - balance from positive is removed and
+    * in negative - updated.
+    *
+    * if max = min (delta = 0) transaction is created with necessary names, amount - max or min (as they are equal)
+    * Both max and min balances are removed from positive and negative lists accordingly.
+    *
+    * Transactions are being added to list.
+    * Process continues until list of positive balances is empty, after than list with transactions is returned.
+    */
     public List<Transaction> resolveTransactions() {
         List<Transaction> transactionsList =new ArrayList<>();
         List<Balance> allfriendsDeltaExpenses =getAllfriendsDeltaExpenses();

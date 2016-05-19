@@ -20,7 +20,10 @@ public class UserInterfaceImpl implements UserInterface {
 
     @Override
     public void openMenu() {
-
+        /**
+         * Prints out command (action)options
+         * Depending on command, updates request object (Map, basicaly <dataName,data>)
+         * */
         System.out.println("----------------------------------------------------");
         System.out.println("To add purchase press 1.");
         System.out.println("To resolve transactions press 2.");
@@ -35,7 +38,7 @@ public class UserInterfaceImpl implements UserInterface {
             case 1:
                 System.out.println("----------------------------------------------------");
                 request.put("command", "ADD_PURCHASE");
-                System.out.println("Please friends name.");
+                System.out.println("Please enter friends name.");
                 String frinedName = scanner.next();
                 System.out.println("Enter what he paid for.");
                 String description = scanner.next();
@@ -66,6 +69,11 @@ public class UserInterfaceImpl implements UserInterface {
 
     @Override
     public void processResponse(Map<String, Object> response) {
+        /**
+         * Gets response object as parameter which is the same type as request (Map<dataName,data>)
+         * Depending on command (which comes in respos) represents received data in console.
+         * */
+
         String command = (String) response.get("command");
         switch (command) {
             case "ADD_PURCHASE":
@@ -97,6 +105,7 @@ public class UserInterfaceImpl implements UserInterface {
     }
     @Override
     public Integer getCommand(){
+        /**Method to pass command to Aplication class, to be able to run aplication until command is 4 (exit) */
         return command;
     }
 }

@@ -7,7 +7,8 @@ import java.util.List;
 
 
 /**
- * Devides map of all friend deltas into 2 maps. One with positive deltas, second with negative
+ * separatePositiveAndNegativeValues method receives list with positive and negative balances, divides/separates
+ * them in two separate lists (positive and negative) and returns list of these lists.
  */
 public class DeltaSeparator {
 

@@ -5,6 +5,9 @@ import Main.Domain.Purchase;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  Just a data storage layer.
+ * */
 
 public class Database {
 
@@ -34,7 +37,7 @@ public class Database {
         return listOfFriendPurchases;
     }
 
-    public void reset(){
+    public void reset() {
         purchaseList.clear();
     }
 }

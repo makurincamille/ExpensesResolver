@@ -1,8 +1,10 @@
 package Main.Domain;
 
+
 /**
- * Created by Camille on 15.05.2016.
- */
+ * debitor - the person who has underpayed and has to send money to creditor
+ * creditor - the person who has underpayed. Has to receive money from debitor
+ * */
 public class Transaction {
 
     String debitorName;

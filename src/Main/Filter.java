@@ -3,7 +3,11 @@ package Main;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * Filter processes requests by getting the command from request, depending on command calling necessary controller methods
+ * and putting returned data in respose object. Returns response object.
+ *
+ * */
 public class Filter {
 
     Controller controller = new Controller();
