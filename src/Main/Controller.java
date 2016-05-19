@@ -15,7 +15,7 @@ import java.util.Map;
 public class Controller {
 
     Database database = new Database();
-    public Double totalExpense = 0.0;
+    RoundUtility roundUtility = new RoundUtility();
 
     public List<String> friendNamesList = new ArrayList<>();
 
@@ -24,25 +24,27 @@ public class Controller {
 
         updateFriendNameList((String) purchaseData.get("friendName"));
         Purchase purchase = new Purchase((String) purchaseData.get("friendName"),
-                (String) purchaseData.get("purchaseDescription"), (Double) purchaseData.get("cost"));
+                (String) purchaseData.get("purchaseDescription"), roundUtility.round((Double) purchaseData.get("cost")));
+        //for debug
+        System.out.println(roundUtility.round((Double) purchaseData.get("cost")));
         database.addPurchase(purchase);
 
     }
 
 
     public Double getTotalExpenses() {
-
+        Double totalExpense = 0.0;
         List<Purchase> purchaseList = database.getAllPurchaseList();
         for (Purchase purchase : purchaseList) {
             Double purchseCost = purchase.getCost();
             totalExpense += purchseCost;
         }
-        return totalExpense;
+        return roundUtility.round(totalExpense);
     }
 
     public Double getAverage() {
 
-        Double average = RoundUtility.round(getTotalExpenses() / friendNamesList.size());
+        Double average = roundUtility.round(getTotalExpenses() / friendNamesList.size());
         return average;
     }
 
@@ -90,7 +92,6 @@ public class Controller {
 
     public void reset() {
         database.reset();
-        totalExpense = 0.0;
         friendNamesList.clear();
     }
 }

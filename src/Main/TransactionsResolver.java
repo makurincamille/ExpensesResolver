@@ -20,7 +20,7 @@ public class TransactionsResolver {
     public Map<String, Double> allfriendsExpenses;
     public List<String> friendNamesList;
     public Double totalExpense;
-
+    RoundUtility roundUtility = new RoundUtility();
     DeltaSeparator separator = new DeltaSeparator();
     EkstremumFinder ekstremumFinder = new EkstremumFinder();
 
@@ -37,8 +37,10 @@ public class TransactionsResolver {
      * if delta is positive - friend is debitor, he has underpayed and has to make transactions
      */
     public List<Balance> getAllfriendsDeltaExpenses() {
-        Double average = RoundUtility.round(totalExpense / friendNamesList.size());
-
+        Double average = 1.0;
+        if (friendNamesList.size()!=0) {
+            average = roundUtility.round(totalExpense / friendNamesList.size());
+        }
         List<Balance> allfriendsDeltaExpenses = new ArrayList<>();
         for (Map.Entry<String, Double> entry : allfriendsExpenses.entrySet()) {
             Double expense = entry.getValue();

@@ -7,6 +7,7 @@ import static junit.framework.Assert.assertEquals;
 
 
 public class RoundUtilityTest {
+    RoundUtility roundUtility = new RoundUtility();
 
     @Test
     public void test1() {
@@ -17,9 +18,9 @@ public class RoundUtilityTest {
         Double value1 = 1.005;
         Double value2 = 1.004;
         Double value3 = 1.006;
-        result1 = RoundUtility.round(value1);
-        result2 = RoundUtility.round(value2);
-        result3 = RoundUtility.round(value3);
+        result1 = roundUtility.round(value1);
+        result2 = roundUtility.round(value2);
+        result3 = roundUtility.round(value3);
         System.out.println(result1);
         System.out.println(result2);
         System.out.println(result3);
@@ -39,9 +40,9 @@ public class RoundUtilityTest {
         Double value1 = 1.00545434478;
         Double value2 = 1.00465564456;
         Double value3 = 1.00665445655;
-        result1 = RoundUtility.round(value1);
-        result2 = RoundUtility.round(value2);
-        result3 = RoundUtility.round(value3);
+        result1 = roundUtility.round(value1);
+        result2 = roundUtility.round(value2);
+        result3 = roundUtility.round(value3);
         System.out.println(result1);
         System.out.println(result2);
         System.out.println(result3);
@@ -61,9 +62,9 @@ public class RoundUtilityTest {
         Double value1 = 1.095;
         Double value2 = 1.995;
         Double value3 = 1.094;
-        result1 = RoundUtility.round(value1);
-        result2 = RoundUtility.round(value2);
-        result3 = RoundUtility.round(value3);
+        result1 = roundUtility.round(value1);
+        result2 = roundUtility.round(value2);
+        result3 = roundUtility.round(value3);
         System.out.println(result1);
         System.out.println(result2);
         System.out.println(result3);

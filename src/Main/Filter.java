@@ -25,6 +25,9 @@ public class Filter {
                 return response;
             case "RESET":
                 controller.reset();
+                response.put("command", command);
+                response.put("status","Data reset.");
+                return response;
 
         }
     return null;

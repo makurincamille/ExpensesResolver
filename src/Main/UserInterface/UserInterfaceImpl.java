@@ -21,7 +21,7 @@ public class UserInterfaceImpl implements UserInterface {
     @Override
     public void openMenu() {
 
-
+        System.out.println("----------------------------------------------------");
         System.out.println("To add purchase press 1.");
         System.out.println("To resolve transactions press 2.");
         System.out.println("To reset press 3.");
@@ -40,17 +40,21 @@ public class UserInterfaceImpl implements UserInterface {
                 System.out.println("Enter what he paid for.");
                 String description = scanner.next();
                 System.out.println("Enter purchase cost.");
-                Double cost = scanner.nextDouble();
+                String costString = scanner.next();
+                Double cost = Double.parseDouble(costString);
                 Map<String, Object> purchaseData = new HashMap<>();
                 purchaseData.put("friendName", frinedName);
                 purchaseData.put("purchaseDescription", description);
                 purchaseData.put("cost", cost);
                 request.put("purchaseData", purchaseData);
+                break;
 
             case 2:
                 request.put("command", "RESOLVE");
+                break;
             case 3:
                 request.put("command", "RESET");
+                break;
         }
     }
 
@@ -69,6 +73,7 @@ public class UserInterfaceImpl implements UserInterface {
                 System.out.println(response.get("status"));
                 System.out.println("Total amount = " + response.get("total"));
                 System.out.println("Amount each friend has to pay = " + response.get("average"));
+                break;
             case "RESOLVE":
 
                 System.out.println("----------------------------------------------------");
@@ -83,8 +88,15 @@ public class UserInterfaceImpl implements UserInterface {
                 for (Transaction transaction: transactions){
                     System.out.println(transaction);
                 }
-
+                break;
+            case "RESET":
+                System.out.println("----------------------------------------------------");
+                System.out.println(response.get("status"));
         }
 
+    }
+    @Override
+    public Integer getCommand(){
+        return command;
     }
 }

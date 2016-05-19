@@ -12,5 +12,6 @@ public interface UserInterface {
     Map getRequest();
 
     void processResponse(Map<String, Object> response);
+    Integer getCommand();
 
 }

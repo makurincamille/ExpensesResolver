@@ -13,10 +13,14 @@ public class Application {
     Filter filter = new Filter();
 
     public void run() {
-        userInterface.openMenu();
-        Map<String, Object> request = userInterface.getRequest();
-        Map<String, Object> response = filter.processRequest(request);
-        userInterface.processResponse(response);
+        while (userInterface.getCommand() != 4) {
+            userInterface.openMenu();
+            if (userInterface.getCommand() != 4) {
+                Map<String, Object> request = userInterface.getRequest();
+                Map<String, Object> response = filter.processRequest(request);
+                userInterface.processResponse(response);
+            }
+        }
 
     }
 }

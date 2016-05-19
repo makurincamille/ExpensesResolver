@@ -10,7 +10,7 @@ import java.math.MathContext;
  */
 public class RoundUtility {
 
-    public static Double round(Double value) {
+    public Double round(Double value) {
         BigDecimal valueToRound = new BigDecimal(value, MathContext.DECIMAL32);
         valueToRound = valueToRound.setScale(2, BigDecimal.ROUND_HALF_UP);
         return valueToRound.doubleValue();
