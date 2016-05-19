@@ -9,14 +9,18 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class UserInterfaceImpl implements UserInterface {
-    int command = 0;
+    Integer command = 0;
     Map<String, Object> request = new HashMap<>();
 
-    @Override
-    public void openMenu() {
+   public UserInterfaceImpl () {
         System.out.println("Hi! This is Expenses Resolver.");
         System.out.println("Here you can add purchases and resolve transactions!");
         System.out.println("----------------------------------------------------");
+    }
+
+    @Override
+    public void openMenu() {
+
 
         System.out.println("To add purchase press 1.");
         System.out.println("To resolve transactions press 2.");
@@ -25,7 +29,7 @@ public class UserInterfaceImpl implements UserInterface {
         System.out.println("Please enter command.");
 
         Scanner scanner = new Scanner(System.in);
-        Integer command = scanner.nextInt();
+        command = scanner.nextInt();
 
         switch (command) {
             case 1:

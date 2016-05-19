@@ -1,7 +1,10 @@
 package Main;
 
 
+import Main.Domain.Balance;
 import Main.Domain.Transaction;
+import Main.Utilities.DeltaSeparator;
+import Main.Utilities.EkstremumFinder;
 import Main.Utilities.RoundUtility;
 
 
@@ -18,6 +21,9 @@ public class TransactionsResolver {
     public List<String> friendNamesList;
     public Double totalExpense;
 
+    DeltaSeparator separator = new DeltaSeparator();
+    EkstremumFinder ekstremumFinder = new EkstremumFinder();
+
     public TransactionsResolver(Map allfriendsExpenses, List<String> friendNamesList, Double totalExpense) {
         this.totalExpense = totalExpense;
         this.allfriendsExpenses = allfriendsExpenses;
@@ -30,34 +36,22 @@ public class TransactionsResolver {
      * if delta is negative - friend is creditor, he overpayed
      * if delta is positive - friend is debitor, he has underpayed and has to make transactions
      */
-    public Map<String, Double> getAllfriendsDeltaExpenses() {
+    public List<Balance> getAllfriendsDeltaExpenses() {
         Double average = RoundUtility.round(totalExpense / friendNamesList.size());
 
-        Map<String, Double> allfriendsDeltaExpenses = new HashMap<>();
+        List<Balance> allfriendsDeltaExpenses = new ArrayList<>();
         for (Map.Entry<String, Double> entry : allfriendsExpenses.entrySet()) {
             Double expense = entry.getValue();
             Double delta = average - expense;
             if (delta != 0) {
-                allfriendsDeltaExpenses.put(entry.getKey(), delta);
+                allfriendsDeltaExpenses.add(new Balance(entry.getKey(),delta)); //entry.getKey(), delta
             }
 
         }
         return allfriendsDeltaExpenses;
     }
 
-    /**
-     * Calculates total amount owed/overpayed
-     */
-    public Double calculateDebt() {
-        Double debt = 0.0;
 
-        for (Map.Entry<String, Double> entry : getAllfriendsDeltaExpenses().entrySet()) {
-            if (entry.getValue() >= 0) {
-                debt += entry.getValue();
-            }
-        }
-        return debt;
-    }
 
     /**
      * In method friend expenses are compared.
@@ -69,36 +63,35 @@ public class TransactionsResolver {
      * *
      */
     public List<Transaction> resolveTransactions() {
-        List<Transaction> transactionsList = new ArrayList<>();
-        Map<String, Double> allfriendsDeltaExpenses = getAllfriendsDeltaExpenses();
+        List<Transaction> transactionsList =new ArrayList<>();
+        List<Balance> allfriendsDeltaExpenses =getAllfriendsDeltaExpenses();
 
-        Double debt = calculateDebt();
+        List<Balance> positive = separator.separatePositiveAndNegativeValues(allfriendsDeltaExpenses).get(0);
+        List<Balance> negative = separator.separatePositiveAndNegativeValues(allfriendsDeltaExpenses).get(1);
 
-        while (debt > 0) {
-            for (Map.Entry<String, Double> outerEntry : allfriendsDeltaExpenses.entrySet()) {
-                Double currentExpense = outerEntry.getValue();
-                    for (Map.Entry<String, Double> innerEntry : allfriendsDeltaExpenses.entrySet()) {
-                    Double comperableExpense = innerEntry.getValue();
-                    if (comperableExpense < 0 && currentExpense >= abs(comperableExpense)) {
-                        Double delta = currentExpense + comperableExpense;
-                        transactionsList.add(new Transaction(outerEntry.getKey(), innerEntry.getKey(), comperableExpense));
-                        if (delta == 0) {
-                            allfriendsDeltaExpenses.remove(outerEntry.getKey());
 
-                        } else {
+        while (!positive.isEmpty()){
+            Balance maxPositive = ekstremumFinder.findEkstrem(positive);
+            Balance maxNegative = ekstremumFinder.findEkstrem(negative);
+            Double delta = maxPositive.getBalance()+maxNegative.getBalance();
 
-                            allfriendsDeltaExpenses.replace(outerEntry.getKey(), currentExpense, currentExpense - delta);
-                        }
-                        allfriendsDeltaExpenses.remove(innerEntry.getKey());
+            if (delta<0){
+               transactionsList.add(new Transaction(maxPositive.getFriendName(),maxNegative.getFriendName(),maxPositive.getBalance()));
+                positive.remove(maxPositive);
+                negative.remove(maxNegative);
+                negative.add(new Balance(maxNegative.getFriendName(),delta));
+            }else if (delta>0){
+                transactionsList.add(new Transaction(maxPositive.getFriendName(),maxNegative.getFriendName(),maxNegative.getBalance()));
+                positive.remove(maxPositive);
+                negative.remove(maxNegative);
+                positive.add(new Balance(maxPositive.getFriendName(),delta));
 
-                        debt -= innerEntry.getValue();
-
-                    }
-                }
-
+            }else{
+            transactionsList.add(new Transaction(maxPositive.getFriendName(), maxNegative.getFriendName(),maxPositive.getBalance()));
+                positive.remove(maxPositive);
+                negative.remove(maxNegative);
             }
         }
-
 
         return transactionsList;
     }

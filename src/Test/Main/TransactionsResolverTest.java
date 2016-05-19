@@ -1,5 +1,6 @@
 package Main;
 
+import Main.Domain.Balance;
 import Main.Domain.Transaction;
 import org.junit.After;
 import org.junit.Before;
@@ -41,7 +42,7 @@ public class TransactionsResolverTest {
         friendNamesList.add("name1");
         totalExpense = 3.0;
         TransactionsResolver transactionsResolver = new TransactionsResolver(allfriendsExpenses, friendNamesList, totalExpense);
-        Map<String, Double> actual = transactionsResolver.getAllfriendsDeltaExpenses();
+        List<Balance> actual = transactionsResolver.getAllfriendsDeltaExpenses();
         assertEquals(0, actual.size());
 
 
@@ -56,42 +57,22 @@ public class TransactionsResolverTest {
         friendNamesList.add("name2");
         totalExpense = 13.0;
         TransactionsResolver transactionsResolver = new TransactionsResolver(allfriendsExpenses, friendNamesList, totalExpense);
-        Map<String, Double> actual = transactionsResolver.getAllfriendsDeltaExpenses();
+        List<Balance> actual = transactionsResolver.getAllfriendsDeltaExpenses();
+
+        //for debug
+        for (Balance balance : actual) {
+            System.out.println(balance.getFriendName() +" "+ balance.getBalance());
+        }
+
         assertEquals(2, actual.size());
-        assertEquals(2.5, actual.get("name1"));
-        assertEquals(-2.5, actual.get("name2"));
+        /*assertEquals(2.5, actual.get(0).getBalance());
+        assertEquals(-2.5, actual.get(1).getBalance());*/
 
 
     }
 
     @Test
-    public void calculateDebtTest1(){
-        allfriendsExpenses.put("name1", 4.0);
-        allfriendsExpenses.put("name2", 9.0);
-        friendNamesList.add("name1");
-        friendNamesList.add("name2");
-        totalExpense = 13.0;
-        TransactionsResolver transactionsResolver = new TransactionsResolver(allfriendsExpenses, friendNamesList, totalExpense);
-        Double actual = transactionsResolver.calculateDebt();
-        assertEquals(2.5,actual);
-    }
-
-    @Test
-    public void calculateDebtTest2(){
-        allfriendsExpenses.put("name1", 4.0);
-        allfriendsExpenses.put("name2", 3.0);
-        allfriendsExpenses.put("name3", 8.0);
-        friendNamesList.add("name1");
-        friendNamesList.add("name2");
-        friendNamesList.add("name3");
-        totalExpense = 15.0;
-        TransactionsResolver transactionsResolver = new TransactionsResolver(allfriendsExpenses, friendNamesList, totalExpense);
-        Double actual = transactionsResolver.calculateDebt();
-        assertEquals(3.0,actual);
-    }
-
-    @Test
-    public void resolveTransactionsTest1(){
+    public void resolveTransactionsTest1() {
 
         allfriendsExpenses.put("name1", 4.0);
         allfriendsExpenses.put("name2", 3.0);
@@ -102,8 +83,10 @@ public class TransactionsResolverTest {
         totalExpense = 15.0;
         TransactionsResolver transactionsResolver = new TransactionsResolver(allfriendsExpenses, friendNamesList, totalExpense);
         List<Transaction> actual = transactionsResolver.resolveTransactions();
-        assertEquals(2,actual.size());
+        assertEquals(2, actual.size());
 
     }
+
+
 
 }

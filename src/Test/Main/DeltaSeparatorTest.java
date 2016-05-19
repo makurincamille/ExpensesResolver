@@ -1,15 +1,17 @@
 package Main;
 
 
+import Main.Domain.Balance;
 import Main.Utilities.DeltaSeparator;
 import org.junit.Test;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+
 
 public class DeltaSeparatorTest {
 
@@ -17,51 +19,57 @@ public class DeltaSeparatorTest {
 
 
     @Test
-    public void separatePositiveAndNegativeValuesTest1(){
-        Map<String, Double> allfriendsDeltaExpenses = new HashMap<>();
-        allfriendsDeltaExpenses.put("name1",2.0);
-        allfriendsDeltaExpenses.put("name2",1.0);
-        allfriendsDeltaExpenses.put("name3",-3.0);
-        allfriendsDeltaExpenses.put("name4",-7.0);
-        allfriendsDeltaExpenses.put("name5",-4.0);
-        List<Map> result = deltaSeparator.separatePositiveAndNegativeValues(allfriendsDeltaExpenses);
+    /** separetate balances with positive and negative amounts  */
+    public void separatePositiveAndNegativeValuesTest1() {
+        List<Balance> allfriendsDeltaExpenses = new ArrayList<>();
+        allfriendsDeltaExpenses.add(new Balance("name1", 2.0));
+        allfriendsDeltaExpenses.add(new Balance("name2", 1.0));
+        allfriendsDeltaExpenses.add(new Balance("name3", -3.0));
+        allfriendsDeltaExpenses.add(new Balance("name4", -7.0));
+        allfriendsDeltaExpenses.add(new Balance("name5", -4.0));
 
-        assertEquals(2.0,result.get(0).get("name1"));
-        assertEquals(-4.0,result.get(1).get("name5"));
+        List<List> result = deltaSeparator.separatePositiveAndNegativeValues(allfriendsDeltaExpenses);
+        List<Balance> positive = result.get(0);
+        List<Balance> negative = result.get(1);
+        assertEquals(2.0, positive.get(0).getBalance());
+        assertEquals("name1", positive.get(0).getFriendName());
+        assertEquals(1.0, positive.get(1).getBalance());
+        assertEquals("name2", positive.get(1).getFriendName());
+        assertEquals(-4.0, negative.get(2).getBalance());
+        assertEquals("name5", negative.get(2).getFriendName());
 
-        assertEquals(2,result.get(0).size());
-        assertEquals(3,result.get(1).size());
-        assertTrue(result.get(0).containsKey("name1"));
-        assertTrue(result.get(0).containsKey("name2"));
-        assertTrue(result.get(0).containsValue(2.0));
-        assertTrue(result.get(0).containsValue(1.0));
-        assertTrue(result.get(1).containsKey("name3"));
-        assertTrue(result.get(1).containsValue(-3.0));
+        assertEquals(2, result.get(0).size());
+        assertEquals(3, result.get(1).size());
 
 
     }
+
     @Test
-    public void separatePositiveAndNegativeValuesTest2(){
-        Map<String, Double> allfriendsDeltaExpenses = new HashMap<>();
-        allfriendsDeltaExpenses.put("name1",2.0);
-        List<Map> result = deltaSeparator.separatePositiveAndNegativeValues(allfriendsDeltaExpenses);
-        assertEquals(1,result.get(0).size());
+    /** separetate balances with one positive balance */
+    public void separatePositiveAndNegativeValuesTest2() {
+        List<Balance> allfriendsDeltaExpenses = new ArrayList<>();
+        allfriendsDeltaExpenses.add(new Balance("name1", 2.0));
+        List<List> result = deltaSeparator.separatePositiveAndNegativeValues(allfriendsDeltaExpenses);
+        assertEquals(1, result.get(0).size());
         assertTrue(result.get(1).isEmpty());
     }
 
     @Test
-    public void separatePositiveAndNegativeValuesTest3(){
-        Map<String, Double> allfriendsDeltaExpenses = new HashMap<>();
-        allfriendsDeltaExpenses.put("name1",-2.0);
-        List<Map> result = deltaSeparator.separatePositiveAndNegativeValues(allfriendsDeltaExpenses);
-        assertEquals(1,result.get(1).size());
+    /** separetate balances with one negative balance */
+    public void separatePositiveAndNegativeValuesTest3() {
+        List<Balance> allfriendsDeltaExpenses = new ArrayList<>();
+        allfriendsDeltaExpenses.add(new Balance("name1", -2.0));
+
+        List<List> result = deltaSeparator.separatePositiveAndNegativeValues(allfriendsDeltaExpenses);
+        assertEquals(1, result.get(1).size());
         assertTrue(result.get(0).isEmpty());
     }
 
     @Test
-    public void separatePositiveAndNegativeValuesTest4(){
-        Map<String, Double> allfriendsDeltaExpenses = new HashMap<>();
-        List<Map> result = deltaSeparator.separatePositiveAndNegativeValues(allfriendsDeltaExpenses);
+    /** separetate empty balances list*/
+    public void separatePositiveAndNegativeValuesTest4() {
+        List<Balance> allfriendsDeltaExpenses = new ArrayList<>();
+        List<List> result = deltaSeparator.separatePositiveAndNegativeValues(allfriendsDeltaExpenses);
         assertTrue(result.get(0).isEmpty());
         assertTrue(result.get(1).isEmpty());
     }
